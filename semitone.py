@@ -172,6 +172,18 @@ class Semitone:
     else:
       return False
 
+  @property
+  def is_natural(self):
+    return self.flats == self.sharps
+
+  @property
+  def is_flat(self):
+    return self.flats > self.sharps
+
+  @property
+  def is_sharp(self):
+    return self.flats < self.sharps
+
   def __eq__(self, other):
       if isinstance(other, Semitone):
         return self.normalize().is_same(other.normalize())
@@ -183,6 +195,10 @@ class Semitone:
           return result
       return not result
 
+  def __sub__(self,other):
+      base_difference = STEP_DIFFERENCES[other.note][self.note]
+      accidental_difference = (self.sharps-other.sharps) - (self.flats-other.flats)
+      return base_difference + accidental_difference
 
   @classmethod
   def from_string(cls,str):

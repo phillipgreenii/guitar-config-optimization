@@ -358,6 +358,105 @@ class SemitoneTest(unittest.TestCase):
     instance = Semitone('D')
     self.assertRaises(ValueError,instance.as_note,None) 
 
+  def test_sub_with_same_semitone(self):
+    instance = Semitone('D')
+    expected_result = 0
+    result = instance - instance
+    self.assertEquals(result, expected_result)
+  
+  def test_sub_with_flattened_semitone(self):
+    instance = Semitone('D')
+    expected_result = 1
+    result = instance - instance.flatten()
+    self.assertEquals(result, expected_result)
+
+  def test_sub_with_sharpened_semitone(self):
+    instance = Semitone('D')
+    expected_result = -1
+    result = instance - instance.sharpen()
+    self.assertEquals(result, expected_result)
+
+  def test_sub_with_different_semitone(self):
+    instance = Semitone('D')
+    different_instance = Semitone('C')
+    expected_result = 2
+    result = instance - different_instance
+    self.assertEquals(result, expected_result)
+
+  def test_sub_with_different_flattened_semitone(self):
+    instance = Semitone('D')
+    different_instance = Semitone('C').flatten()
+    expected_result = 3
+    result = instance - different_instance
+    self.assertEquals(result, expected_result)
+
+  def test_sub_with_different_sharpened_semitone(self):
+    instance = Semitone('D')
+    different_instance = Semitone('C').sharpen()
+    expected_result = 1
+    result = instance - different_instance
+    self.assertEquals(result, expected_result)
+
+
+  def test_is_natural_should_return_true_when_equal_number_of_flats_and_sharps(self):
+    instance = Semitone('D',sharps=1,flats=1)
+
+    self.assertTrue(instance.is_natural)
+
+  def test_is_natural_should_return_true_when_no_flats_and_no_sharps(self):
+    instance = Semitone('D')
+
+    self.assertTrue(instance.is_natural)
+
+  def test_is_natural_should_return_false_when_more_flats_than_sharps(self):
+    instance = Semitone('D',flats = 1)
+
+    self.assertFalse(instance.is_natural)
+
+  def test_is_natural_should_return_false_when_more_sharps_than_flats(self):
+    instance = Semitone('D',sharps = 1)
+
+    self.assertFalse(instance.is_natural)
+
+  def test_is_flat_should_return_true_when_more_flats_than_sharps(self):
+    instance = Semitone('D',flats = 1)
+
+    self.assertTrue(instance.is_flat)
+
+  def test_is_flat_should_return_false_when_no_sharps_or_flats(self):
+    instance = Semitone('D')
+
+    self.assertFalse(instance.is_flat)
+
+  def test_is_flat_should_return_false_when_equal_number_of_flats_and_sharps(self):
+    instance = Semitone('D', sharps=1, flats=1)
+
+    self.assertFalse(instance.is_flat)
+
+  def test_is_flat_should_return_false_when_more_sharps_than_flats(self):
+    instance = Semitone('D', sharps = 1)
+
+    self.assertFalse(instance.is_flat)
+
+  def test_is_sharp_should_return_true_when_more_flats_than_sharps(self):
+    instance = Semitone('D', sharps = 1)
+
+    self.assertTrue(instance.is_sharp)
+
+  def test_is_sharp_should_return_false_when_no_sharps_or_flats(self):
+    instance = Semitone('D')
+
+    self.assertFalse(instance.is_sharp)
+
+  def test_is_sharp_should_return_false_when_equal_number_of_flats_and_sharps(self):
+    instance = Semitone('D', sharps=1, flats=1)
+
+    self.assertFalse(instance.is_sharp)
+
+  def test_is_sharp_should_return_false_when_more_flats_than_sharps(self):
+    instance = Semitone('D', flats = 1)
+
+    self.assertFalse(instance.is_sharp)
 
   def assertSame(self,seminote1,seminote2):
     if(not seminote1.is_same(seminote2)):

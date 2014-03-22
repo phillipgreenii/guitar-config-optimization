@@ -4,7 +4,9 @@ from semitone import Semitone
 
 chord_descriptors = {
   'major': (2, 2, 1, 2, 2, 2, 1),
-  'minor': (2, 1, 2, 2, 1, 2, 2)
+  'minor': (2, 1, 2, 2, 1, 2, 2),
+  'harmonic-minor' : (2,1,2,2,1,3,1),
+  'melodic-minor' : (2,1,2,2,2,2,1)
 }
 
 tonal_notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
@@ -12,7 +14,7 @@ tonal_notes = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 class ScaleGenerator:
 
   def generate(self, root, type):
-    current_semitone = Semitone.from_string(root)
+    current_semitone = root
     semi_tones = [current_semitone]
 
     for step_size in chord_descriptors[type]:
@@ -27,4 +29,4 @@ class ScaleGenerator:
     for note, semi_tone in zip(ordered_tonal_notes, semi_tones):
       scale.append(semi_tone.as_note(note))
 
-    return tuple(map(str, scale))
+    return tuple(scale)
